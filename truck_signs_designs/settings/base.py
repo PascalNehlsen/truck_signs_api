@@ -21,11 +21,25 @@ TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
+import environ
 
+# Initialisiere environ
+env = environ.Env()
+
+# Lese die .env-Datei
+env.read_env(os.path.join(os.path.dirname(__file__), '.env'))
+
+# Hole den SECRET_KEY aus der .env-Datei
+SECRET_KEY = env('SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+
+
+# Debug-Option
+DEBUG = env.bool('DEBUG', default=False)
 
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',]
-
 
 # Application definition
 
@@ -84,17 +98,22 @@ WSGI_APPLICATION = 'truck_signs_designs.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'NAME_OF_DB',
-#         'USER': 'DB_USER_NAME',
-#         'PASSWORD': 'DB_PASSWORD',
-#         'HOST': 'localhost',
-#         'PORT': 'PORT_NUMBER',
-#     }
-# }
+print("DB_NAME:", os.getenv('DB_NAME'))
+print("DB_USER:", os.getenv('DB_USER'))
+print("DB_PASSWORD:", os.getenv('DB_PASSWORD'))
+print("DB_HOST:", os.getenv('DB_HOST'))
+print("DB_PORT:", os.getenv('DB_PORT'))
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+    }
+}
 
 
 # Password validation
@@ -147,9 +166,6 @@ MEDIA_ROOT = os.path.join(ROOT_BASE_DIR, 'media')
 
 # STRIPE_PUBLISHABLE_KEY=os.getenv("STRIPE_PUBLISHABLE_KEY")
 # STRIPE_SECRET_KEY=os.getenv("STRIPE_SECRET_KEY")
-
-
-
 
 # EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 # EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")

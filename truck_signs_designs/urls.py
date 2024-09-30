@@ -14,14 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.conf.urls import url,include
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse
 
+# Ansicht für die Wurzel-URL
+def home(request):
+    return HttpResponse("Welcome to the Truck Signs API!")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # url(r'^$', HomePageAPI, name='home'),
-    url(r'^truck-signs/', include('backend.urls', namespace='trucks-signs-namespace')),
+    path('', home, name='home'), 
+    path('truck-signs/', include('backend.urls', namespace='trucks-signs-namespace')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
