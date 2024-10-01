@@ -18,13 +18,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
-
-# Ansicht für die Wurzel-URL
-def home(request):
-    return HttpResponse("Welcome to the Truck Signs API!")
+from django.shortcuts import render
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name='home'), 
+    # path('', HomePageAPI, name='home'), 
     path('truck-signs/', include('backend.urls', namespace='trucks-signs-namespace')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

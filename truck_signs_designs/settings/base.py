@@ -98,12 +98,6 @@ WSGI_APPLICATION = 'truck_signs_designs.wsgi.application'
 #     }
 # }
 
-print("DB_NAME:", os.getenv('DB_NAME'))
-print("DB_USER:", os.getenv('DB_USER'))
-print("DB_PASSWORD:", os.getenv('DB_PASSWORD'))
-print("DB_HOST:", os.getenv('DB_HOST'))
-print("DB_PORT:", os.getenv('DB_PORT'))
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
