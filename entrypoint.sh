@@ -9,14 +9,10 @@ done
 
 echo "PostgreSQL is active"
 
-python manage.py collectstatic --noinput
 python manage.py migrate
-python manage.py makemigrations
-
-gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8000
-
-
+python manage.py collectstatic --noinput
 
 echo "Postgresql migrations finished"
 
-python manage.py runserver
+# Run Gunicorn on port 8020
+gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8020

@@ -20,8 +20,12 @@ from django.conf.urls.static import static
 from django.http import HttpResponse
 from django.shortcuts import render
 
+def welcome_view(request):
+    return HttpResponse("Welcome to Truck Signs API")
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("", welcome_view, name="home"),
     # path('', HomePageAPI, name='home'), 
     path('truck-signs/', include('backend.urls', namespace='trucks-signs-namespace')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
