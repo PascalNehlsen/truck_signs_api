@@ -39,7 +39,7 @@ STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 DEBUG = env.bool('DEBUG', default=False)
 
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',]
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', '167.235.136.162']
 
 # Application definition
 

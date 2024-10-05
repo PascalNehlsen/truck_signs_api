@@ -4,6 +4,9 @@ FROM python:3.8.1
 # Set working directory
 WORKDIR /app
 
+# Install netcat
+RUN apt-get update && apt-get install -y netcat && apt-get clean
+
 # Copy and install dependencies
 COPY requirements.txt ${WORKDIR}
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
@@ -18,4 +21,4 @@ RUN chmod +x ./entrypoint.sh
 EXPOSE 8020
 
 # Set entrypoint
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
