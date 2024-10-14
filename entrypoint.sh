@@ -15,4 +15,16 @@ python manage.py migrate
 
 echo "Postgresql migrations finished"
 
+if [ -f truck_signs_designs/settings/.env ]; then
+  export $(grep -v '^#' truck_signs_designs/settings/.env | xargs)
+
+if [ -z "$DJANGO_SUPERUSER_USERNAME" ] || [ -z "$DJANGO_SUPERUSER_EMAIL" ] || [ -z "$DJANGO_SUPERUSER_PASSWORD" ]; then
+  echo "Superuser data is not set. Please check the .env file."
+  exit 1
+
+echo "Creating superuser ..."
+
+python manage.py createsuperuser --no-input || echo "Superuser already exists or could not be created."
+
 gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8000
+

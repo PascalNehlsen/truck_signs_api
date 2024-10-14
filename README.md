@@ -11,7 +11,7 @@
 ## Table of Contents
 
 - [Description](#description)
-- [Quickstart](#quickstart)
+- [Installation](#installation)
 - [Usage](#usage)
 - [Screenshots of the Django Backend Admin Panel](#screenshots)
 - [Useful Links](#useful_links)
@@ -43,7 +43,7 @@ Most of the views are CBV imported from _rest_framework.generics_, and they allo
 
 The behavior of some of the views had to be modified to address functionalities such as creation of order and payment, as in this case, for example, both functionalities are implemented in the same view, and so a _GenericAPIView_ was the view from which it inherits. Another example of this is the _UploadCustomerImage_ View that takes the vinyl template uploaded by the clients and creates a new product based on it.
 
-## Quickstart
+## Installation
 
 1. Clone the repo:
    ```bash
@@ -58,18 +58,25 @@ The behavior of some of the views had to be modified to address functionalities 
       cp simple_env_config.env .env
       ```
    1. The new .env file should contain all the environment variables necessary to run all the django app in all the environments. However, the only needed variables for the development environment to run are the following:
+
       ```bash
-      SECRET_KEY
-      DB_NAME
-      DB_USER
-      DB_PASSWORD
-      DB_HOST
-      DB_PORT
-      STRIPE_PUBLISHABLE_KEY
-      STRIPE_SECRET_KEY
-      EMAIL_HOST_USER
-      EMAIL_HOST_PASSWORD
+      SECRET_KEY=<secret_key>
+      DB_NAME=<db_name>
+      DB_USER=<db_user>
+      DB_PASSWORD=<dev_db_password>
+      DB_HOST=<localhost>
+      DB_PORT=<5432>
+      STRIPE_PUBLISHABLE_KEY=<stripe_pub_key>
+      STRIPE_SECRET_KEY=<stripe_secret_key>
+      EMAIL_HOST_USER=<your.email@gmail.com>
+      EMAIL_HOST_PASSWORD=<your_password>
+
+      # creating a superuser
+      DJANGO_SUPERUSER_USERNAME=admin
+      DJANGO_SUPERUSER_EMAIL=admin@example.com
+      DJANGO_SUPERUSER_PASSWORD=adminpassword
       ```
+
    1. For the database, the default configurations should be:
       ```bash
       DB_NAME=trucksigns_db
@@ -101,38 +108,7 @@ The behavior of some of the views had to be modified to address functionalities 
 
 ## Usage
 
-1. Create a Dockerfile on root Level
-
-   ```bash
-   nano Dockerfile
-   ```
-
-   ```bash
-   # Base Image
-   FROM python:3.8.1
-
-   # Set working directory
-   WORKDIR /app
-
-   # Install netcat
-   RUN apt-get update && apt-get install -y netcat && apt-get clean
-
-   # Copy and install dependencies
-   COPY requirements.txt ${WORKDIR}
-   RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
-
-   # Copy rest of the application code
-   COPY . ${WORKDIR}
-
-   # Make the entrypoint script executable
-   RUN chmod +x ./entrypoint.sh
-
-   # Expose the correct port (8020)
-   EXPOSE 8020
-
-   # Set entrypoint
-   ENTRYPOINT ["/app/entrypoint.sh"]
-   ```
+1. Create a [Dockerfile](./Dockerfile) on root Level
 
 2. Create Docker image
 
@@ -156,12 +132,12 @@ The behavior of some of the views had to be modified to address functionalities 
 
    ```bash
    docker run --name <docker-name> \
-   --network <networkname> \
-   -e POSTGRES_PASSWORD=<postgres-password> \
-   -e POSTGRES_USER=<postgres-user> \
-   -e POSTGRES_DB=<postgres-db-name> \
-   -v <postgres-volume>:/var/lib/postgresql/data \ #store the postgres data in a volume
-   -d postgres
+      --network <networkname> \
+      -e POSTGRES_PASSWORD=<postgres-password> \
+      -e POSTGRES_USER=<postgres-user> \
+      -e POSTGRES_DB=<postgres-db-name> \
+      -v <postgres-volume>:/var/lib/postgresql/data \ #store the postgres data in a volume
+      -d postgres
    ```
 
    - <network-name>: The network you created before.
@@ -171,35 +147,18 @@ The behavior of some of the views had to be modified to address functionalities 
 
    ```bash
    docker run --name <container-name> \
-   --network <network-name> \
-   -p 8020:8000 \
-   -v <media-volume>:/app/media \
-   -v <static-volume>:/app/static \
-   --restart on-failure \
-   <image-name>:<image-tag>
+      --network <network-name> \
+      -p 8020:8000 \
+      -v <media-volume>:/app/media \
+      -v <static-volume>:/app/static \
+      --restart on-failure \
+      <image-name>:<image-tag>
    ```
 
    - <network-name>: The same network as your postgres container
    - This container listens on Port 8020
    - `--restart on-failure`: Configures the container to restart automatically due to an error.
    - <image-name>:<image-tag>: Your image name due the build process.
-
-6. Create a superuser
-
-   ```bash
-   docker exec -it <container-id> bash
-   ```
-
-   - This command is used to execute a command in a running container.
-
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-   - You will be prompted to enter the following details:
-     - Username
-     - Email address
-     - Password
 
 **NOTE:** To create Truck vinyls with Truck logos in them, first create the **Category** Truck Sign, and then the **Product** (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
 
