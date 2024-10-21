@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y netcat && apt-get clean
 
 # Copy and install dependencies
 COPY requirements.txt ${WORKDIR}
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy rest of the application code
 COPY . ${WORKDIR}

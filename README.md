@@ -65,7 +65,7 @@ The behavior of some of the views had to be modified to address functionalities 
       DB_USER=<db_user>
       DB_PASSWORD=<dev_db_password>
       DB_HOST=<localhost>
-      DB_PORT=<5432>
+      DB_PORT=5432 # standard postgreSQL port
       STRIPE_PUBLISHABLE_KEY=<stripe_pub_key>
       STRIPE_SECRET_KEY=<stripe_secret_key>
       EMAIL_HOST_USER=<your.email@gmail.com>

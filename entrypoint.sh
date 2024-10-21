@@ -17,10 +17,12 @@ echo "Postgresql migrations finished"
 
 if [ -f truck_signs_designs/settings/.env ]; then
   export $(grep -v '^#' truck_signs_designs/settings/.env | xargs)
+fi;
 
 if [ -z "$DJANGO_SUPERUSER_USERNAME" ] || [ -z "$DJANGO_SUPERUSER_EMAIL" ] || [ -z "$DJANGO_SUPERUSER_PASSWORD" ]; then
   echo "Superuser data is not set. Please check the .env file."
   exit 1
+fi;
 
 echo "Creating superuser ..."
 
